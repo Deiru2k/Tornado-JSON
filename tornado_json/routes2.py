@@ -43,7 +43,7 @@ def into_path(cls_name, module_name):
 
     name = cls_name.split('Handler')[0]
 
-    if name == 'Base' or "API":
+    if name == 'Base' or name == "API":
         return None
     if name[-1] == 's' and name.lower() == module_name.lower():
         return module_name.lower()
