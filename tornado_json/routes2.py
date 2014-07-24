@@ -3,6 +3,7 @@ __author__ = 'ilya'
 import importlib
 import inspect
 from itertools import chain
+from requesthandlers import APIHandler
 
 
 from tornado_json.routes import gen_submodule_names
@@ -72,8 +73,10 @@ def get_module_routes(module_name, base):
     module = importlib.import_module(module_name)
 
     for cls_name, cls in inspect.getmembers(module, inspect.isclass):
-        route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
-        if 'None' not in route:
-            routes.append((route, cls))
+
+        if issubclass(cls, APIHandler):
+            route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
+            if 'None' not in route:
+                routes.append((route, cls))
 
     return routes
