@@ -3,7 +3,7 @@ __author__ = 'ilya'
 import importlib
 import inspect
 from itertools import chain
-from requesthandlers import APIHandler
+from tornado_json.requesthandlers import APIHandler
 
 
 from tornado_json.routes import gen_submodule_names
@@ -43,6 +43,7 @@ def into_path(cls_name, module_name):
     """
 
     name = cls_name.split('Handler')[0]
+
 
     if name == 'Base' or name == "API":
         return None
