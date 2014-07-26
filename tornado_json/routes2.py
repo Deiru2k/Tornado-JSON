@@ -43,12 +43,15 @@ def into_path(cls_name, module_name):
 
     name = cls_name.split('Handler')[0]
 
+
+
     if name == 'Base' or name == "API":
         return None
+
     if name[-1] == 's' and name.lower() == module_name.lower():
         return module_name.lower()
     elif name[-1] != 's' and (name+'s').lower() == module_name:
-        return r"%s/(.*)" % module_name.lower()
+        return r"%s/(\w+)" % module_name.lower()
     else:
         return r"%s/%s" % (module_name.lower(), name.lower())
 
@@ -72,7 +75,14 @@ def get_module_routes(module_name, base):
     module = importlib.import_module(module_name)
 
     for cls_name, cls in inspect.getmembers(module, inspect.isclass):
-        route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
+        if cls.RELATIVE_URL:
+            route = r"/%s/%s" % (base, cls.RELATIVE_URL)
+        elif cls.ABSOLUTE_URL:
+            route = r"/%s" % cls.ABSOLUTE_URL
+        elif cls.OBJECT_LEVEL:
+            route = r"/%s/%s"
+        else:
+            route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
         if 'None' not in route:
             routes.append((route, cls))
 

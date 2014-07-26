@@ -14,6 +14,10 @@ class BaseHandler(RequestHandler):
     __url_names__ = ["__self__"]
     __urls__ = []
 
+    ABSOLUTE_URL = None
+    RELATIVE_URL = None
+    OBJECT_LEVEL = False
+
     @property
     def db_conn(self):
         """Returns database connection abstraction
