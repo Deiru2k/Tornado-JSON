@@ -80,9 +80,9 @@ def get_module_routes(module_name, base):
             elif cls.ABSOLUTE_URL:
                 route = r"/%s" % cls.ABSOLUTE_URL
             elif cls.OBJECT_LEVEL:
-                route = r"/%s/%s"
+                route = r"/%s/%s?"
             else:
-                route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
+                route = r"/%s/%s?" % (base, into_path(cls_name, module_name.split('.')[1]))
             if 'None' not in route:
                 routes.append((route, cls))
 
