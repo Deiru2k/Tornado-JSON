@@ -3,6 +3,7 @@ __author__ = 'ilya'
 import importlib
 import inspect
 from itertools import chain
+from tornado_json.requesthandlers import APIHandler
 
 
 from tornado_json.routes import gen_submodule_names
@@ -42,9 +43,6 @@ def into_path(cls_name, module_name):
     """
 
     name = cls_name.split('Handler')[0]
-
-
-
     if name == 'Base' or name == "API":
         return None
 
@@ -75,15 +73,20 @@ def get_module_routes(module_name, base):
     module = importlib.import_module(module_name)
 
     for cls_name, cls in inspect.getmembers(module, inspect.isclass):
-        if cls.RELATIVE_URL:
-            route = r"/%s/%s" % (base, cls.RELATIVE_URL)
-        elif cls.ABSOLUTE_URL:
-            route = r"/%s" % cls.ABSOLUTE_URL
-        elif cls.OBJECT_LEVEL:
-            route = r"/%s/%s"
-        else:
-            route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
-        if 'None' not in route:
-            routes.append((route, cls))
+
+        if issubclass(cls, APIHandler):
+            if cls.RELATIVE_URL:
+                route = r"/%s/%s" % (base, cls.RELATIVE_URL)
+            elif cls.ABSOLUTE_URL:
+                route = r"/%s" % cls.ABSOLUTE_URL
+            elif cls.OBJECT_LEVEL:
+                route = r"/%s/%s"
+            else:
+                route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
+            if 'None' not in route:
+                routes.append((route, cls))
+                route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
+                if 'None' not in route:
+                    routes.append((route, cls))
 
     return routes
