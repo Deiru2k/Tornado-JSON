@@ -51,7 +51,7 @@ def into_path(cls_name, module_name):
     elif name[-1] != 's' and (name+'s').lower() == module_name:
         return r"%s/(\w+)" % module_name.lower()
     else:
-        return r"%s/%s" % (module_name.lower(), name.lower())
+        return r"%s/%s?" % (module_name.lower(), name.lower())
 
 
 def get_module_routes(module_name, base):
