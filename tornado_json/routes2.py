@@ -85,8 +85,5 @@ def get_module_routes(module_name, base):
                 route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
             if 'None' not in route:
                 routes.append((route, cls))
-                route = r"/%s/%s" % (base, into_path(cls_name, module_name.split('.')[1]))
-                if 'None' not in route:
-                    routes.append((route, cls))
 
     return routes
