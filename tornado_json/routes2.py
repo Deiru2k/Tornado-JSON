@@ -49,7 +49,7 @@ def into_path(cls_name, module_name):
     if name[-1] == 's' and name.lower() == module_name.lower():
         return module_name.lower()
     elif name[-1] != 's' and (name+'s').lower() == module_name:
-        return r"%s/(.*)" % module_name.lower()
+        return r"%s/(.*)?" % module_name.lower()
     else:
         return r"%s/%s?" % (module_name.lower(), name.lower())
 
@@ -76,7 +76,7 @@ def get_module_routes(module_name, base):
 
         if issubclass(cls, APIHandler):
             if cls.RELATIVE_URL:
-                route = r"/%s/%s?" % (base, cls.RELATIVE_URL)
+                route = r"/%s/%s" % (base, cls.RELATIVE_URL)
             elif cls.ABSOLUTE_URL:
                 route = r"/%s?" % cls.ABSOLUTE_URL
             elif cls.OBJECT_LEVEL:
