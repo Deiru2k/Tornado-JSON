@@ -48,6 +48,8 @@ class JSendMixin(object):
         :param code: A numeric code corresponding to the error, if applicable
         """
         result = {'status': 'error', 'message': message}
+        if code:
+            self.set_status(code)
         if data:
             result['data'] = data
         if code:
